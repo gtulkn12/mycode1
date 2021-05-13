@@ -59,6 +59,7 @@ def main():
     # display the top 10 movies by Gross Earnings.
     # passing the 10 values to head returns the top 10 not the default 5
     print(sorted_by_gross.head(10))
+    sorted_by_gross.to_excel("edited_sorted_gross.xls", index=False)
 
     # create a stacked bar graph
     sorted_by_gross['Gross Earnings'].head(10).plot(kind="barh")
