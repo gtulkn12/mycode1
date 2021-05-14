@@ -32,7 +32,6 @@ def main():
                         if friday_answer not in data["Friday"].keys():
                             print("***** Invalid entry, please try Again *****")
                             continue
-
                         song_answer= int(input(f"\n{data['Questions']['Songlist']}\n{songoptions}>"))
                         if song_answer not in data["SongList"].keys():
                             print("***** Invalid entry, please try Again *****")
