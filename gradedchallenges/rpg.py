@@ -15,7 +15,7 @@ Commands:
 def showStatus():
   #print the player's current status
   print('---------------------------')
-  print('You are in the ' + currentRoom)
+  print('You are in the ' + rooms[currentRoom]['description'])
   #print the current inventory
   print('Inventory : ' + str(inventory))
   #print an item if there is one
@@ -33,7 +33,7 @@ inventory = []
 rooms = {
 
         'Hall' : {
-                'description' : 'You are in the Hall, you have a door to your South, East',                
+                'description' : 'Hall, you have a door to your South, East',                
                 'east' : 'Dining Room',
                 'south' : 'Kitchen',
                 'west' : 'Basement',
@@ -42,13 +42,12 @@ rooms = {
                            'sword': 'Golden Sword hanging on the wall'}
         },
         'Kitchen' : {
-                'description' : 'You are in the Kitchen, you have a door to your North',
+                'description' : 'Kitchen, you have a door to your North',
                 'north' : 'Hall',
-                'south' : 'Dungeon',
                 'item'  : {'monster' : 'Big Scary Cookie Monster'}
         },
         'Dining Room' : {
-                'description' : 'You are in the Dinning Room, you have a door to your West, East and North',                               
+                'description' : 'Dinning Room, you have a door to your West, East and North',                               
                 'north' : 'Pantry',
                 'east': 'Garden',
                 'west' : 'Hall',
@@ -56,23 +55,23 @@ rooms = {
         },
 #CHALLENGE - Added Basement as additional Room to the west of Hall
         'Basement' : {
-                'description' : 'You are in the Basement, you have doors to your East and South',
+                'description' : 'Basement, you have doors to your East and South',
                 'east' : 'Hall',
                 'south' : 'Dungeon',
                 'item' : {'cookie' : 'Oreo Cookie'}
         },
         'Garden' : {
-                'description' : 'You are in the Garden, you have a door to your North',
+                'description' : 'Garden, you have a door to your North',
                 'west' : 'Dining Room'
         },
         'Pantry' : {
-                'description' : 'You are in the Pantry, you have a door to your South',
+                'description' : 'Pantry, you have a door to your South',
                 'south' : 'Dining Room',
                 'item' : {'cookie' : 'Chocolate Chip Cookie'}
         },
 #CHALLENGE - added TrapDoor from Kitachen into Living Room, Can only enter living through trapdoor and only exit to dinning room
         'Dungeon' : {
-                'description' : 'You went through a TRAP-Door that landed you in the Dungeon, you have a door to your East',
+                'description' : 'Dungeon, You went through a TRAP-Door and can only exit to your East',
                 'east' : 'Dining Room'
         }            
 }
@@ -128,6 +127,9 @@ while True:
   if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
     print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
     break
+
+  elif 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item'] and 'cookie' in inventory:
+    print('A monster ate your cookie and ran away')
 
   ## If a player enters a room with a monster
   elif 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
