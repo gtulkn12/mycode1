@@ -1,9 +1,10 @@
 import pygame
 import random
 import math
-
+from pygame import  mixer
 #initialize the pygame / always in game
 pygame.init()
+
 
 # create the screen
 screen = pygame.display.set_mode((800, 600))
@@ -11,13 +12,17 @@ screen = pygame.display.set_mode((800, 600))
 # Background
 background = pygame.image.load('.\\Udemy\\SpaceInvader\\bg.jpg')
 
+#Background Sound
+mixer.music.load('.\\Udemy\\SpaceInvader\\background.wav')
+mixer.music.play(-1)
+
 # Title and Icon
 pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load('.\\Udemy\\SpaceInvader\\ufo.png')
 pygame.display.set_icon(icon)
 
 ### PLAYER
-playerImg = pygame.image.load('.\\Udemy\\SpaceInvader\\battleship.png')
+playerImg = pygame.image.load('.\\Graded\\mycode1\\SpaceInvader\\battleship.png')
 playerX = 370
 playerY = 510
 playerX_change = 0
@@ -33,8 +38,8 @@ num_of_enemies = 6
 for i in range(num_of_enemies):
         enemyImg.append(pygame.image.load('.\\Udemy\\SpaceInvader\\enemy.png'))
         enemyX.append(random.randint(0, 736)) # places the enemy at random location on the x axis
-        enemyY.append(random.randint(50, 150)) # places enemy at random location on the y axis
-        enemyX_change.append(0.3)
+        enemyY.append(random.randint(15, 150)) # places enemy at random location on the y axis
+        enemyX_change.append(.3)
         enemyy_change.append(40)
 
         # enemyImg = pygame.image.load('.\\Udemy\\SpaceInvader\\enemy.png')
@@ -48,7 +53,7 @@ bulletImg = pygame.image.load('.\\Udemy\\SpaceInvader\\bullet.png')
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bullety_change = .7
+bullety_change = 2
 bullet_state = 'ready'
 
 ### SCORE
@@ -59,6 +64,7 @@ textX= 10
 textY= 10
 
 def show_score(x,y):
+        # True --> show on screen
         score = font.render("Score :" + str(score_value), True, (255, 255, 255) )
         screen.blit(score, (x, y))
 
@@ -91,8 +97,8 @@ while running:
         screen.fill((0, 0, 0))
         # background image
         screen.blit(background, (0, 0))
-        #moves player right with every pass of the while loop
         
+        #moves player right with every pass of the while loop
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                         running = False
@@ -103,14 +109,16 @@ while running:
                         if event.key == pygame.K_LEFT:
                                 print("Left arrow is pressed.")
                                 #controls distance moved/speed of object to the Left
-                                playerX_change = -0.3
+                                playerX_change = -1
                         if event.key == pygame.K_RIGHT:
                                 print("Right arrow is pressed")
                                 #controls distance moved/speed of object to the Right
-                                playerX_change = 0.3
+                                playerX_change = 1
                         if event.key == pygame.K_SPACE:
                                 print("Space bar is pressed")
                                 if bullet_state is "ready":
+                                        bullet_sound = mixer.Sound(".\\Udemy\\SpaceInvader\\laser.wav")
+                                        bullet_sound.play()
                                         bulletX = playerX
                                 #controls distance moved/speed of object to the Right
                                         fire_bullet(bulletX,bulletY)
@@ -132,21 +140,23 @@ while running:
         for i in range(num_of_enemies):
                 enemyX[i] += enemyX_change[i]
                 if enemyX[i] <= 0:
-                        enemyX_change[i] = 0.3
+                        enemyX_change[i] = .3
                         enemyY[i] += enemyy_change[i]
                 elif enemyX[i] > 736:
-                        enemyX_change[i] = -0.3
+                        enemyX_change[i] = -.3
                         enemyY[i] += enemyy_change[i]
 
 ### Collision
                 collision = isCollision (enemyX[i], enemyY[i], bulletX, bulletY)
                 if collision:
+                        explosion_Sound = mixer.Sound(".\\Udemy\\SpaceInvader\\explosion.wav")
+                        explosion_Sound.play()
                         bulletY = 480
                         bullet_state = "ready"
                         score_value += 1
                         print(score_value)
                         enemyX[i] = random.randint(0, 736)
-                        enemyY[i] = random.randint(50, 150)
+                        enemyY[i] = random.randint(15, 150)
                 enemy(enemyX[i], enemyY[i], i)
 
 ### Bullet Movement
